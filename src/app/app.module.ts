@@ -5,8 +5,10 @@ import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { AppComponent } from './app.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as fromRoot from './store';
+import { CanvasModule } from './canvas/canvas.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import * as fromRoot from './store';
     FormsModule,
     HttpModule,
     MaterialModule,
-    StoreModule.provideStore(fromRoot.reducer)
+    StoreModule.provideStore(fromRoot.reducer),
+    CanvasModule,
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
   ],
   providers: [],
   bootstrap: [AppComponent]

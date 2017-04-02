@@ -5,13 +5,16 @@ import { environment } from '../../environments/environment';
 import { createSelector} from 'reselect';
 
 import * as fromData from './data/data.reducers';
+import * as fromCanvas from './canvas/canvas.reducers';
 
 export interface State {
   data: fromData.State;
+  canvas: fromCanvas.State;
 };
 
 const reducers = {
-  search: fromData.reducer,
+  data: fromData.reducer,
+  canvas: fromCanvas.reducer,
 };
 
 const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
@@ -26,5 +29,8 @@ export function reducer(state: any, action: any) {
 }
 
 export const getDataState = (state: State) => state.data;
+export const getCanvasState = (state: State) => state.canvas;
 
 export const getAllData = createSelector(getDataState, fromData.getAllData);
+export const getAllCanvasPoints = createSelector(getCanvasState, fromCanvas.getAllPoints);
+export const getLastCanvasPoint = createSelector(getCanvasState, fromCanvas.getLastPoint);

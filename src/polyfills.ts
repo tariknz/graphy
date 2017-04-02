@@ -66,3 +66,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
  */
 // import 'intl';  // Run `npm install --save intl`.
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/pairwise';
+import 'rxjs/add/operator/distinct';

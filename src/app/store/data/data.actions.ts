@@ -3,11 +3,11 @@ import { type } from '../utils';
 import { DataItem } from './data-item.model';
 
 export const ActionTypes = {
-  ADD_DATA:           type('[Data] Add Data'),
+  ADD_DATA: type('[Data] Add Data'),
 };
 
 export class AddDataAction implements Action {
-  type = ActionTypes.ADD_DATA;
+  public type = ActionTypes.ADD_DATA;
 
   constructor(public payload: DataItem) { }
 }
