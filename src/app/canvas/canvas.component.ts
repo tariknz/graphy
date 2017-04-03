@@ -1,8 +1,9 @@
 import {
   Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy,
-  EventEmitter, Output, NgZone, ElementRef, AfterViewInit, ViewChild
+  EventEmitter, Output, ElementRef, AfterViewInit, ViewChild, OnDestroy
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { CanvasPos } from '../store/canvas/canvas-pos.model';
 
 @Component({
@@ -11,7 +12,7 @@ import { CanvasPos } from '../store/canvas/canvas-pos.model';
   styleUrls: ['./canvas.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CanvasComponent implements AfterViewInit {
+export class CanvasComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('canvas') public canvas: ElementRef;
 
@@ -25,57 +26,65 @@ export class CanvasComponent implements AfterViewInit {
    */
   @Output() public onDraw = new EventEmitter<CanvasPos>();
 
+  private canvasEl: HTMLCanvasElement;
   private cx: CanvasRenderingContext2D;
+  private resizeSub: Subscription;
 
-  constructor(private zone: NgZone) { }
+  constructor() { }
 
   public ngAfterViewInit() {
-    const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    this.cx = canvasEl.getContext('2d');
-
-    canvasEl.width = this.width;
-    canvasEl.height = this.height;
+    this.canvasEl = this.canvas.nativeElement;
+    this.cx = this.canvasEl.getContext('2d');
 
     this.cx.lineWidth = 3;
     this.cx.lineCap = 'round';
     this.cx.strokeStyle = '#000';
 
+    this.resizeCanvas();
+    this.resizeSub = Observable
+        .fromEvent(window, 'resize')
+        .debounceTime(500)
+        .subscribe(() => this.resizeCanvas());
+
     Observable
-      .fromEvent(canvasEl, 'mousedown')
-      .subscribe((e) => {
-        Observable
-          .fromEvent(canvasEl, 'mousemove')
-          .takeUntil(Observable.fromEvent(canvasEl, 'mouseup'))
-          .pairwise()
-          .subscribe((res: [MouseEvent, MouseEvent]) => {
-            const rect = canvasEl.getBoundingClientRect();
+      .fromEvent(this.canvasEl, 'mousedown')
+      .switchMap((e) => {
+        return Observable
+          .fromEvent(this.canvasEl, 'mousemove')
+          .takeUntil(Observable.fromEvent(this.canvasEl, 'mouseup'))
+          .pairwise();
+      })
+      .subscribe((res: [MouseEvent, MouseEvent]) => {
+        const rect = this.canvasEl.getBoundingClientRect();
 
-            const prevPos: CanvasPos = {
-              x: res[0].clientX - rect.left,
-              y: res[0].clientY - rect.top
-            };
+        const prevPos: CanvasPos = {
+          x: res[0].clientX - rect.left,
+          y: res[0].clientY - rect.top
+        };
 
-            const currentPos: CanvasPos = {
-              x: res[1].clientX - rect.left,
-              y: res[1].clientY - rect.top
-            };
+        const currentPos: CanvasPos = {
+          x: res[1].clientX - rect.left,
+          y: res[1].clientY - rect.top
+        };
 
-            const percentOnScreen: CanvasPos = {
-              x: currentPos.x / this.width,
-              y: 1 - (currentPos.y / this.height)
-            };
+        const percentOnScreen: CanvasPos = {
+          x: currentPos.x / this.width,
+          y: 1 - (currentPos.y / this.height)
+        };
 
-            this.onDraw.emit(percentOnScreen);
-            this.drawOnCanvas(prevPos, currentPos);
-          });
+        this.onDraw.emit(percentOnScreen);
+        this.drawOnCanvas(prevPos, currentPos);
       });
+  }
+
+  public ngOnDestroy() {
+    this.resizeSub.unsubscribe();
   }
 
   private drawOnCanvas(prevPos: CanvasPos, currentPos: CanvasPos) {
     if (!this.cx) { return; }
 
-    const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    const rect = canvasEl.getBoundingClientRect();
+    const rect = this.canvasEl.getBoundingClientRect();
 
     this.cx.beginPath();
 
@@ -93,6 +102,11 @@ export class CanvasComponent implements AfterViewInit {
     }
 
     return currentPos;
+  }
+
+  private resizeCanvas() {
+    this.canvasEl.width = this.canvasEl.offsetWidth;
+    this.canvasEl.height = this.canvasEl.offsetHeight;
   }
 
 }

@@ -69,3 +69,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/distinct';
+import 'rxjs/add/operator/debounceTime';

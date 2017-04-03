@@ -9,10 +9,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import * as fromRoot from './store';
 import { CanvasModule } from './canvas/canvas.module';
+import { DataTableComponent } from './data-table/data-table.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DataTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,6 +25,7 @@ import { CanvasModule } from './canvas/canvas.module';
     StoreModule.provideStore(fromRoot.reducer),
     CanvasModule,
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

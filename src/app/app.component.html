@@ -1,5 +1,18 @@
-<h1>
-  {{title}}
-</h1>
+<md-toolbar color="primary">
+  {{ title }}
+</md-toolbar>
 
-<app-canvas></app-canvas>
+<md-card class="mad">
+  <app-canvas></app-canvas>
+</md-card>
+
+<md-tab-group>
+  <md-tab label="Raw Data">
+    <md-card class="mad">
+      <app-data-table [data]="dataItems$ | async"></app-data-table>
+    </md-card>
+  </md-tab>
+  <md-tab label="Graph">
+
+  </md-tab>
+</md-tab-group>

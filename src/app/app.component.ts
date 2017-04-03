@@ -12,19 +12,19 @@ import { AddDataAction } from './store/data/data.actions';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
   @ViewChild(CanvasComponent) public canvas: CanvasComponent;
 
   public title = 'Graphy';
-  public drawPoints$: Observable<CanvasPos[]>;
+  public dataItems$: Observable<CanvasPos[]>;
 
   public xAxis = new AxisOptions();
   public yAxis = new AxisOptions();
 
   constructor(private store: Store<fromRoot.State>) {
-    this.drawPoints$ = store.select(fromRoot.getAllCanvasPoints);
+    this.dataItems$ = store.select(fromRoot.getAllData);
 
     this.xAxis.min = 0;
     this.xAxis.max = 10000;
