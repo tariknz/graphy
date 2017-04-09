@@ -6,15 +6,18 @@ import { createSelector} from 'reselect';
 
 import * as fromData from './data/data.reducers';
 import * as fromCanvas from './canvas/canvas.reducers';
+import * as fromOptions from './options/options.reducers';
 
 export interface State {
   data: fromData.State;
   canvas: fromCanvas.State;
+  options: fromOptions.State;
 };
 
 const reducers = {
   data: fromData.reducer,
   canvas: fromCanvas.reducer,
+  options: fromOptions.reducer,
 };
 
 const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
@@ -30,7 +33,9 @@ export function reducer(state: any, action: any) {
 
 export const getDataState = (state: State) => state.data;
 export const getCanvasState = (state: State) => state.canvas;
+export const getOptionsState = (state: State) => state.options;
 
 export const getAllData = createSelector(getDataState, fromData.getAllData);
 export const getAllCanvasPoints = createSelector(getCanvasState, fromCanvas.getAllPoints);
 export const getLastCanvasPoint = createSelector(getCanvasState, fromCanvas.getLastPoint);
+export const getOptions = createSelector(getOptionsState, fromOptions.getOptions);

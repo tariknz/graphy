@@ -11,6 +11,7 @@ import * as fromRoot from './store';
 import { CanvasModule } from './canvas/canvas.module';
 import { DataTableComponent } from './data-table/data-table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CanvasModule,
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     BrowserAnimationsModule,
+    FlexLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,17 +2,43 @@
   {{ title }}
 </md-toolbar>
 
-<md-card class="mad">
-  <app-canvas></app-canvas>
-</md-card>
-
-<md-tab-group>
-  <md-tab label="Raw Data">
+<div fxLayout="row">
+  <div fxFlex fxLayout="column">
     <md-card class="mad">
-      <app-data-table [data]="dataItems$ | async"></app-data-table>
+      <app-canvas></app-canvas>
     </md-card>
-  </md-tab>
-  <md-tab label="Graph">
 
-  </md-tab>
-</md-tab-group>
+    <md-card class="mad">
+      <md-tab-group>
+        <md-tab label="Raw Data">
+
+          <app-data-table [data]="dataItems$ | async"></app-data-table>
+
+        </md-tab>
+        <md-tab label="Graph">
+
+        </md-tab>
+      </md-tab-group>
+    </md-card>
+  </div>
+  <div fxFlex="25" fxLayout="column">
+    <md-card class="options-panel">
+      <button md-raised-button color="warn" (click)="clear()">Clear</button>
+    </md-card>
+    <md-card class="options-panel">
+      <md-input-container>
+        <input mdInput placeholder="Min X Value" type="number" />
+      </md-input-container>
+      <md-input-container>
+        <input mdInput placeholder="Max X Value" type="number" />
+      </md-input-container>
+      <md-input-container>
+        <input mdInput placeholder="Min Y Value" type="number" />
+      </md-input-container>
+      <md-input-container>
+        <input mdInput placeholder="Max Y Value" type="number" />
+      </md-input-container>
+      <button md-raised-button color="primary">Clear & Update Options</button>
+    </md-card>
+  </div>
+</div>

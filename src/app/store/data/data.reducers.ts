@@ -1,5 +1,5 @@
 import { DataItem } from './data-item.model';
-import { Actions, ActionTypes } from './data.actions';
+import { Actions, ActionTypes, AddDataAction } from './data.actions';
 
 export interface State {
   items: DataItem[];
@@ -11,9 +11,13 @@ export const initialState: State = {
 
 export function reducer(state = initialState, action: Actions): State {
   switch (action.type) {
+    case ActionTypes.CLEAR_DATA:
+      return {
+        items: []
+      };
     case ActionTypes.ADD_DATA:
       return {
-        items: [...state.items, action.payload]
+        items: [...state.items, (action as AddDataAction).payload]
       };
     default:
       return state;

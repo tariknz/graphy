@@ -6,8 +6,9 @@ import { AddPointAction } from './store/canvas/canvas.actions';
 import { CanvasComponent } from './canvas/canvas.component';
 
 import * as fromRoot from './store';
-import { AxisOptions } from './axis-options.model';
-import { AddDataAction } from './store/data/data.actions';
+import { AddDataAction, ClearDataAction } from './store/data/data.actions';
+import { AxisOptions } from './store/options/axis-options.model';
+import { GraphOptions } from './store/options/options.model';
 
 @Component({
   selector: 'app-root',
@@ -19,20 +20,13 @@ export class AppComponent implements OnInit {
 
   public title = 'Graphy';
   public dataItems$: Observable<CanvasPos[]>;
-
-  public xAxis = new AxisOptions();
-  public yAxis = new AxisOptions();
+  public options: GraphOptions;
 
   constructor(private store: Store<fromRoot.State>) {
     this.dataItems$ = store.select(fromRoot.getAllData);
 
-    this.xAxis.min = 0;
-    this.xAxis.max = 10000;
-    this.xAxis.ticks = 1000;
-
-    this.yAxis.min = 0;
-    this.yAxis.max = 10000;
-    this.yAxis.ticks = 1000;
+    store.select(fromRoot.getOptions)
+      .subscribe(options => this.options = options);
   }
 
   public ngOnInit() {
@@ -40,19 +34,24 @@ export class AppComponent implements OnInit {
       .asObservable()
       .map(ratio => {
         return {
-          x: (this.xAxis.max - this.xAxis.min) * ratio.x,
-          y: (this.yAxis.max - this.yAxis.min) * ratio.y,
+          x: (this.options.x.max - this.options.x.min) * ratio.x,
+          y: (this.options.y.max - this.options.y.min) * ratio.y,
         };
       })
       .map((value) => {
-          return {
-            x: Math.round(value.x / this.xAxis.interval) * this.xAxis.interval,
-            y: Math.round(value.y / this.yAxis.interval) * this.yAxis.interval,
-          };
+        return {
+          x: Math.round(value.x / this.options.x.interval) * this.options.x.interval,
+          y: Math.round(value.y / this.options.y.interval) * this.options.y.interval,
+        };
       })
       .distinct((value) => value.x)
       .subscribe(res => {
         this.store.dispatch(new AddDataAction(res));
       });
+  }
+
+  public clear() {
+    this.store.dispatch(new ClearDataAction());
+    this.canvas.clear();
   }
 }

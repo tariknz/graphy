@@ -3,7 +3,7 @@ import { CanvasPos } from './canvas-pos.model';
 
 export interface State {
   items: CanvasPos[];
-  lastPoint: CanvasPos;
+  lastPoint: CanvasPos | undefined;
 }
 
 export const initialState: State = {

@@ -27,7 +27,7 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
   @Output() public onDraw = new EventEmitter<CanvasPos>();
 
   private canvasEl: HTMLCanvasElement;
-  private cx: CanvasRenderingContext2D;
+  private cx: CanvasRenderingContext2D | null;
   private resizeSub: Subscription;
 
   constructor() { }
@@ -35,6 +35,10 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
   public ngAfterViewInit() {
     this.canvasEl = this.canvas.nativeElement;
     this.cx = this.canvasEl.getContext('2d');
+
+    if (!this.cx) {
+      throw new Error('Fatal Error: Could not get canvas context');
+    }
 
     this.cx.lineWidth = 3;
     this.cx.lineCap = 'round';
@@ -79,6 +83,12 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
 
   public ngOnDestroy() {
     this.resizeSub.unsubscribe();
+  }
+
+  public clear() {
+    if (this.cx) {
+      this.cx.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+    }
   }
 
   private drawOnCanvas(prevPos: CanvasPos, currentPos: CanvasPos) {
