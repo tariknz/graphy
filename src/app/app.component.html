@@ -11,12 +11,10 @@
     <md-card class="mad">
       <md-tab-group>
         <md-tab label="Raw Data">
-
           <app-data-table [data]="dataItems$ | async"></app-data-table>
-
         </md-tab>
         <md-tab label="Graph">
-
+          <app-graph [data]="dataItems$ | async"></app-graph>
         </md-tab>
       </md-tab-group>
     </md-card>
