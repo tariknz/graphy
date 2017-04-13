@@ -12,12 +12,14 @@ import { CanvasModule } from './canvas/canvas.module';
 import { DataTableComponent } from './data-table/data-table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppMaterialModule } from './app-material.module';
+import { AppMaterialModule } from './common/app-material.module';
+import { GraphComponent } from './graph/graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataTableComponent,
+    GraphComponent,
   ],
   imports: [
     BrowserModule,

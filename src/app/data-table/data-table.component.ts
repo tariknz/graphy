@@ -8,7 +8,7 @@ import { DataItem } from '../store/data/data-item.model';
 })
 export class DataTableComponent implements OnInit {
 
-  @Input() public last = 20;
+  @Input() public last = 10;
   @Input() public data: DataItem[];
 
   public get formattedData(): DataItem[] {

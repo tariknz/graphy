@@ -39,3 +39,4 @@ export const getAllData = createSelector(getDataState, fromData.getAllData);
 export const getAllCanvasPoints = createSelector(getCanvasState, fromCanvas.getAllPoints);
 export const getLastCanvasPoint = createSelector(getCanvasState, fromCanvas.getLastPoint);
 export const getOptions = createSelector(getOptionsState, fromOptions.getOptions);
+export const getTotalDataItems = createSelector(getDataState, fromData.getTotalDataItems);

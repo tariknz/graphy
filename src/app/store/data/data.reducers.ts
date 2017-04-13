@@ -25,3 +25,4 @@ export function reducer(state = initialState, action: Actions): State {
 }
 
 export const getAllData = (state: State) => state.items;
+export const getTotalDataItems = (state: State) => state.items.length;
