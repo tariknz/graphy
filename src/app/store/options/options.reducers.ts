@@ -25,7 +25,7 @@ export const getOptions = (state: State) => state.options;
 
 function getDefaultOptions(): GraphOptions {
     return {
-      x: new AxisOptions(0, 10000, 1000),
-      y: new AxisOptions(0, 10000, 1000)
+      x: { min: 0, max: 10000, ticks: 1000 },
+      y: { min: 0, max: 10000, ticks: 1000 }
     };
 }

@@ -2,6 +2,9 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "skipLibCheck": true,
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",

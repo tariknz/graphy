@@ -9,6 +9,8 @@ import * as fromRoot from './store';
 import { AddDataAction, ClearDataAction } from './store/data/data.actions';
 import { AxisOptions } from './store/options/axis-options.model';
 import { GraphOptions } from './store/options/options.model';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { SetOptionsAction } from './store/options/options.actions';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +23,12 @@ export class AppComponent implements OnInit {
   public title = 'Graphy';
   public dataItems$: Observable<CanvasPos[]>;
   public options: GraphOptions;
+  public optionsForm: FormGroup;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(
+    private store: Store<fromRoot.State>,
+    private fb: FormBuilder,
+  ) {
     this.dataItems$ = store.select(fromRoot.getAllData);
 
     store.select(fromRoot.getOptions)
@@ -40,18 +46,50 @@ export class AppComponent implements OnInit {
       })
       .map((value) => {
         return {
-          x: Math.round(value.x / this.options.x.interval) * this.options.x.interval,
-          y: Math.round(value.y / this.options.y.interval) * this.options.y.interval,
+          x: this.getTranslatedValue(value, this.options.x),
+          y: this.getTranslatedValue(value, this.options.x),
         };
       })
       .distinct((value) => value.x)
       .subscribe(res => {
         this.store.dispatch(new AddDataAction(res));
       });
+
+      this.initOptionsForm();
   }
 
   public clear() {
     this.store.dispatch(new ClearDataAction());
     this.canvas.clear();
   }
+
+  public setOptions() {
+    this.clear();
+    this.store.dispatch(new SetOptionsAction(this.optionsForm.value));
+
+  }
+
+  private getTranslatedValue(value: { x: number, y: number }, axis: AxisOptions): number {
+    const interval = (axis.max - axis.min) / axis.ticks;
+    return Math.round(value.x / interval) * interval;
+  }
+
+  private initOptionsForm() {
+    this.optionsForm = this.fb.group({
+      x: this.fb.group({
+        min: [],
+        max: [],
+        ticks: [],
+      }),
+      y: this.fb.group({
+        min: [],
+        max: [],
+        ticks: [],
+      }),
+    });
+
+    this.optionsForm.patchValue(this.options);
+  }
+
+
 }

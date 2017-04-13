@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
@@ -12,6 +12,7 @@ import { CanvasModule } from './canvas/canvas.module';
 import { DataTableComponent } from './data-table/data-table.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AppMaterialModule } from './app-material.module';
 
 @NgModule({
   declarations: [
@@ -21,8 +22,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
-    MaterialModule,
+    AppMaterialModule,
     StoreModule.provideStore(fromRoot.reducer),
     CanvasModule,
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
