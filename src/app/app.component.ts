@@ -11,6 +11,7 @@ import { AxisOptions } from './store/options/axis-options.model';
 import { GraphOptions } from './store/options/options.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SetOptionsAction } from './store/options/options.actions';
+import { CsvExporter } from './common/exporter';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,10 @@ export class AppComponent implements OnInit {
   @ViewChild(CanvasComponent) public canvas: CanvasComponent;
 
   public title = 'Graphy';
+
   public dataItems$: Observable<CanvasPos[]>;
+  public dataTotal$: Observable<number>;
+
   public options: GraphOptions;
   public optionsForm: FormGroup;
 
@@ -30,6 +34,7 @@ export class AppComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.dataItems$ = store.select(fromRoot.getAllData);
+    this.dataTotal$ = store.select(fromRoot.getTotalDataItems);
 
     store.select(fromRoot.getOptions)
       .subscribe(options => this.options = options);
@@ -67,6 +72,15 @@ export class AppComponent implements OnInit {
     this.clear();
     this.store.dispatch(new SetOptionsAction(this.optionsForm.value));
 
+  }
+
+  public export() {
+    this.store
+      .select(fromRoot.getAllData)
+      .first()
+      .subscribe(data => {
+        CsvExporter.export(data);
+      });
   }
 
   private getTranslatedValue(value: { x: number, y: number }, axis: AxisOptions): number {

@@ -52,5 +52,9 @@
         <button type="submit" md-raised-button color="primary">Clear & Update</button>
       </form>
     </md-card>
+    <md-card class="options-panel mad">
+      <p>Total: {{ dataTotal$ | async }}</p>
+      <button md-raised-button color="primary" (click)="export()">Export</button>
+    </md-card>
   </div>
 </div>
