@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from './common/app-material.module';
 import { GraphComponent } from './graph/graph.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { GraphComponent } from './graph/graph.component';
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     BrowserAnimationsModule,
     FlexLayoutModule,
+    NgxChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

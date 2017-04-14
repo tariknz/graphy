@@ -55,7 +55,10 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
       .switchMap((e) => {
         return Observable
           .fromEvent(this.canvasEl, 'mousemove')
-          .takeUntil(Observable.fromEvent(this.canvasEl, 'mouseup'))
+          .takeUntil(
+            Observable.merge(
+              Observable.fromEvent(this.canvasEl, 'mouseout'),
+              Observable.fromEvent(this.canvasEl, 'mouseup')).first())
           .pairwise();
       })
       .subscribe((res: [MouseEvent, MouseEvent]) => {

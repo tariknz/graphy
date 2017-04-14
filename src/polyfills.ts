@@ -70,3 +70,4 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/distinct';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/zip';

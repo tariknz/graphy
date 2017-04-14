@@ -49,12 +49,7 @@ export class AppComponent implements OnInit {
           y: (this.options.y.max - this.options.y.min) * ratio.y,
         };
       })
-      .map((value) => {
-        return {
-          x: this.getTranslatedValue(value, this.options.x),
-          y: this.getTranslatedValue(value, this.options.x),
-        };
-      })
+      .map((value) => this.getTranslatedValue(value, this.options))
       .distinct((value) => value.x)
       .subscribe(res => {
         this.store.dispatch(new AddDataAction(res));
@@ -83,9 +78,14 @@ export class AppComponent implements OnInit {
       });
   }
 
-  private getTranslatedValue(value: { x: number, y: number }, axis: AxisOptions): number {
-    const interval = (axis.max - axis.min) / axis.ticks;
-    return Math.round(value.x / interval) * interval;
+  private getTranslatedValue(value: { x: number, y: number }, options: GraphOptions): { x: number, y: number } {
+    const intervalX = (options.x.max - options.x.min) / options.x.ticks;
+    const intervalY = (options.y.max - options.y.min) / options.y.ticks;
+
+    return {
+      x: Math.round(value.x / intervalX) * intervalX,
+      y: Math.round(value.y / intervalY) * intervalY,
+    }
   }
 
   private initOptionsForm() {

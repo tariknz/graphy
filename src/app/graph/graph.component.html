@@ -1,3 +1,16 @@
-<p>
-  graph works!
-</p>
+<div class="no-data-prompt" *ngIf="!data.length">
+  <md-icon>timeline</md-icon>
+  Start drawing on the canvas above to see the Graph.
+</div>
+<div class="container">
+  <ngx-charts-line-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="graphData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [autoScale]="autoScale"
+    (select)="onSelect($event)">
+  </ngx-charts-line-chart>
+</div>
+
