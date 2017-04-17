@@ -16,6 +16,7 @@ import { AppMaterialModule } from './common/app-material.module';
 import { GraphComponent } from './graph/graph.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OptionsComponent } from './options/options.component';
+import { ExporterComponent } from './exporter/exporter.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { OptionsComponent } from './options/options.component';
     DataTableComponent,
     GraphComponent,
     OptionsComponent,
+    ExporterComponent,
   ],
   imports: [
     BrowserModule,

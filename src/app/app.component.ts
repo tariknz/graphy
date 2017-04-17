@@ -11,7 +11,6 @@ import { AxisOptions } from './store/options/axis-options.model';
 import { GraphOptions } from './store/options/options.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SetOptionsAction } from './store/options/options.actions';
-import { CsvExporter } from './common/exporter';
 import { CanvasToData } from './common/canvas-to-data';
 
 @Component({
@@ -61,14 +60,5 @@ export class AppComponent implements OnInit {
   public setOptions(options: GraphOptions) {
     this.clear();
     this.store.dispatch(new SetOptionsAction(options));
-  }
-
-  public export() {
-    this.store
-      .select(fromRoot.getAllData)
-      .first()
-      .subscribe(data => {
-        CsvExporter.export(data);
-      });
   }
 }

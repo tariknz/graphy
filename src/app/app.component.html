@@ -32,8 +32,7 @@
     </md-card>
     <md-card class="options-panel mad">
       <!-- Export Panel -->
-      <p>Total: {{ dataTotal$ | async }}</p>
-      <button md-raised-button color="primary" (click)="export()">Export</button>
+      <app-exporter [data]="dataItems$ | async"></app-exporter>
     </md-card>
   </div>
 </div>

@@ -4,7 +4,7 @@ import { GraphOptions } from '../store/options/options.model';
 @Component({
   selector: 'app-options',
   templateUrl: './options.component.html',
-  styleUrls: ['./options.component.less']
+  styleUrls: ['./options.component.less'],
 })
 export class OptionsComponent {
 
