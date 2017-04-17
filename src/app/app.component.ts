@@ -12,6 +12,7 @@ import { GraphOptions } from './store/options/options.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { SetOptionsAction } from './store/options/options.actions';
 import { CsvExporter } from './common/exporter';
+import { CanvasToData } from './common/canvas-to-data';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
 
   public dataItems$: Observable<CanvasPos[]>;
   public dataTotal$: Observable<number>;
+  public options$: Observable<GraphOptions>;
 
   public options: GraphOptions;
   public optionsForm: FormGroup;
@@ -35,27 +37,20 @@ export class AppComponent implements OnInit {
   ) {
     this.dataItems$ = store.select(fromRoot.getAllData);
     this.dataTotal$ = store.select(fromRoot.getTotalDataItems);
+    this.options$ = store.select(fromRoot.getOptions);
 
     store.select(fromRoot.getOptions)
-      .subscribe(options => this.options = options);
+         .subscribe(options => this.options = options);
   }
 
   public ngOnInit() {
     this.canvas.onDraw
       .asObservable()
-      .map(ratio => {
-        return {
-          x: (this.options.x.max - this.options.x.min) * ratio.x,
-          y: (this.options.y.max - this.options.y.min) * ratio.y,
-        };
-      })
-      .map((value) => this.getTranslatedValue(value, this.options))
+      .map(ratio => CanvasToData.mapRatioToData(ratio, this.options))
       .distinct((value) => value.x)
       .subscribe(res => {
         this.store.dispatch(new AddDataAction(res));
       });
-
-      this.initOptionsForm();
   }
 
   public clear() {
@@ -63,10 +58,9 @@ export class AppComponent implements OnInit {
     this.canvas.clear();
   }
 
-  public setOptions() {
+  public setOptions(options: GraphOptions) {
     this.clear();
-    this.store.dispatch(new SetOptionsAction(this.optionsForm.value));
-
+    this.store.dispatch(new SetOptionsAction(options));
   }
 
   public export() {
@@ -77,33 +71,4 @@ export class AppComponent implements OnInit {
         CsvExporter.export(data);
       });
   }
-
-  private getTranslatedValue(value: { x: number, y: number }, options: GraphOptions): { x: number, y: number } {
-    const intervalX = (options.x.max - options.x.min) / options.x.ticks;
-    const intervalY = (options.y.max - options.y.min) / options.y.ticks;
-
-    return {
-      x: Math.round(value.x / intervalX) * intervalX,
-      y: Math.round(value.y / intervalY) * intervalY,
-    }
-  }
-
-  private initOptionsForm() {
-    this.optionsForm = this.fb.group({
-      x: this.fb.group({
-        min: [],
-        max: [],
-        ticks: [],
-      }),
-      y: this.fb.group({
-        min: [],
-        max: [],
-        ticks: [],
-      }),
-    });
-
-    this.optionsForm.patchValue(this.options);
-  }
-
-
 }

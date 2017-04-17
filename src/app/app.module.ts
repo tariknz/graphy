@@ -15,12 +15,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from './common/app-material.module';
 import { GraphComponent } from './graph/graph.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { OptionsComponent } from './options/options.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DataTableComponent,
     GraphComponent,
+    OptionsComponent,
   ],
   imports: [
     BrowserModule,

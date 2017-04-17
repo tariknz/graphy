@@ -24,35 +24,14 @@
       <button md-raised-button color="warn" (click)="clear()">Clear</button>
     </md-card>
     <md-card class="options-panel mad">
-      <form [formGroup]="optionsForm" (ngSubmit)="setOptions()">
-        <div formGroupName="x">
-          <md-input-container>
-            <input mdInput formControlName="min" placeholder="Min X" type="number" />
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="max" placeholder="Max X" type="number" />
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="ticks" placeholder="Ticks X" type="number" />
-          </md-input-container>
-        </div>
-
-        <div formGroupName="y">
-          <md-input-container>
-            <input mdInput formControlName="min" placeholder="Min Y" type="number" />
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="max" placeholder="Max Y" type="number" />
-          </md-input-container>
-          <md-input-container>
-            <input mdInput formControlName="ticks" placeholder="Ticks Y" type="number" />
-          </md-input-container>
-        </div>
-
-        <button type="submit" md-raised-button color="primary">Clear & Update</button>
-      </form>
+      <!-- Graph Options Panel -->
+      <app-options
+        [options]="options$ | async"
+        (onOptionsUpdated)="setOptions($event)">
+      </app-options>
     </md-card>
     <md-card class="options-panel mad">
+      <!-- Export Panel -->
       <p>Total: {{ dataTotal$ | async }}</p>
       <button md-raised-button color="primary" (click)="export()">Export</button>
     </md-card>

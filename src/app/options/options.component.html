@@ -1,0 +1,27 @@
+<form #form="ngForm" (ngSubmit)="submit(form.value)">
+  <div ngModelGroup="x">
+    <md-input-container>
+      <input mdInput name="min" placeholder="Min X" type="number" [ngModel]="options.x.min"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput name="max" placeholder="Max X" type="number" [ngModel]="options.x.max"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput name="ticks" placeholder="Ticks X" type="number" [ngModel]="options.x.ticks"/>
+    </md-input-container>
+  </div>
+
+  <div ngModelGroup="y">
+    <md-input-container>
+      <input mdInput name="min" placeholder="Min Y" type="number" [ngModel]="options.y.min"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput name="max" placeholder="Max Y" type="number" [ngModel]="options.y.max"/>
+    </md-input-container>
+    <md-input-container>
+      <input mdInput name="ticks" placeholder="Ticks Y" type="number" [ngModel]="options.y.ticks"/>
+    </md-input-container>
+  </div>
+
+  <button type="submit" md-raised-button color="primary">Clear & Update</button>
+</form>
