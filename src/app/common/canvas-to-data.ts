@@ -7,14 +7,12 @@ export class CanvasToData {
     options: GraphOptions,
   ): { x: number, y: number } {
     const convertedValue = {
-      x: (options.x.max - options.x.min) * ratio.x,
-      y: (options.y.max - options.y.min) * ratio.y,
+      x: ((options.x.max - options.x.min) * ratio.x) + options.x.min,
+      y: ((options.y.max - options.y.min) * ratio.y) + options.y.min,
     };
 
     const intervalX = (options.x.max - options.x.min) / options.x.ticks;
     const intervalY = (options.y.max - options.y.min) / options.y.ticks;
-
-    console.log(options);
 
     return {
       x: Math.round(convertedValue.x / intervalX) * intervalX,
