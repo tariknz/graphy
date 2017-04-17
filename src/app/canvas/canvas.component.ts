@@ -16,9 +16,6 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('canvas') public canvas: ElementRef;
 
-  @Input() public width = 400;
-  @Input() public height = 400;
-
   /**
    * Returns current position
    *
@@ -75,8 +72,8 @@ export class CanvasComponent implements AfterViewInit, OnDestroy {
         };
 
         const percentOnScreen: CanvasPos = {
-          x: currentPos.x / this.width,
-          y: 1 - (currentPos.y / this.height)
+          x: currentPos.x / this.canvasEl.width,
+          y: 1 - (currentPos.y / this.canvasEl.height)
         };
 
         this.onDraw.emit(percentOnScreen);
