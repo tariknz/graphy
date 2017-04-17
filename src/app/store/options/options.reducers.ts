@@ -1,5 +1,5 @@
 import { GraphOptions } from './options.model';
-import { AxisOptions } from './axis-options.model';
+import { AxisOptions, AxisOptionsType } from './axis-options.model';
 import { SetOptionsAction, Actions, ActionTypes } from './options.actions';
 
 export interface State {
@@ -25,7 +25,7 @@ export const getOptions = (state: State) => state.options;
 
 function getDefaultOptions(): GraphOptions {
     return {
-      x: { min: 0, max: 10000, ticks: 1000 },
-      y: { min: 0, max: 10000, ticks: 1000 }
+      x: { min: 0, max: 10000, ticks: 1000, type: AxisOptionsType.Number },
+      y: { min: 0, max: 10000, ticks: 1000, type: AxisOptionsType.Number }
     };
 }

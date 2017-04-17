@@ -1,5 +1,6 @@
 import { CanvasPos } from '../store/canvas/canvas-pos.model';
 import { GraphOptions } from '../store/options/options.model';
+import { AxisOptions, AxisOptionsType } from '../store/options/axis-options.model';
 
 export class CanvasToData {
   public static mapRatioToData(
@@ -7,16 +8,24 @@ export class CanvasToData {
     options: GraphOptions,
   ): { x: number, y: number } {
     const convertedValue = {
-      x: ((options.x.max - options.x.min) * ratio.x) + options.x.min,
-      y: ((options.y.max - options.y.min) * ratio.y) + options.y.min,
+      x: this.ratioToNumber(options.x, ratio.x),
+      y: this.ratioToNumber(options.y, ratio.y),
     };
-
-    const intervalX = (options.x.max - options.x.min) / options.x.ticks;
-    const intervalY = (options.y.max - options.y.min) / options.y.ticks;
-
     return {
-      x: Math.round(convertedValue.x / intervalX) * intervalX,
-      y: Math.round(convertedValue.y / intervalY) * intervalY,
+      x: this.roundToNearestInterval(convertedValue.x, this.getInterval(options.x)),
+      y: this.roundToNearestInterval(convertedValue.y,  this.getInterval(options.y)),
     };
+  }
+
+  private static ratioToNumber(axis: AxisOptions, ratio: number): number {
+      return ((axis.max - axis.min) * ratio) + axis.min;
+  }
+
+  private static getInterval(axis: AxisOptions): number {
+    return (axis.max - axis.min) / axis.ticks;
+  }
+
+  private static roundToNearestInterval(value: number, interval: number): number {
+    return Math.round(value / interval) * interval;
   }
 }
